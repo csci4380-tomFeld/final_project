@@ -39,12 +39,6 @@ public class DogRestController {
 		return "echoMessage echoed: " + message;
 	}
 
-	@GetMapping("/messageInJsonObject")
-	@CrossOrigin(origins={"http://localhost:4200","http://localhost:4201"})
-	public String messageInJsonObject(@RequestParam(value="msg", defaultValue="Hello") String message) {
-		return "{\"message\":\"messageInJsonObject returned:" + message + "\"}";
-	}
-
 	@GetMapping("")
 	public Page<Dog> findAll(@RequestParam(defaultValue="0") int page, @RequestParam(value="rowsPerPage", defaultValue="5") int size) {
 		Page<Dog> dogsPage = dogRepository.findAll(new PageRequest(page, size));
@@ -54,24 +48,6 @@ public class DogRestController {
 	@GetMapping("/all")
 	public  List<Dog> findAll() {
 		List<Dog> dogs = dogRepository.findAll();
-		return dogs;
-	}
-
-	@GetMapping("/{id}")
-	public  Optional<Dog> findById(@PathVariable String id) {
-		Optional<Dog> dog = dogRepository.findById(id);
-		return dog;
-	}
-
-	@GetMapping("/petId/{petId}")
-	public  Optional<List<Dog>> findByPetId(@PathVariable String petId) {
-		Optional<List<Dog>> dogs = dogRepository.findByPetId(petId);
-		return dogs;
-	}
-	
-	@GetMapping("/ageRange/{ageGT}/{ageLT}")
-	public  List<Dog> findMyByAgeBetween(@PathVariable Integer ageGT, @PathVariable Integer ageLT) {
-		List<Dog> dogs = dogRepository.findMyByAgeBetween(ageGT, ageLT);
 		return dogs;
 	}
 
@@ -85,6 +61,18 @@ public class DogRestController {
 	public  Dog insert(@RequestBody final Dog dog) {
 		Dog insertedDog = dogRepository.insert(dog);
 		return insertedDog;
+	}
+	
+	@GetMapping("/{id}")
+	public  Optional<Dog> findById(@PathVariable String id) {
+		Optional<Dog> dog = dogRepository.findById(id);
+		return dog;
+	}
+
+	@GetMapping("/petId/{petId}")
+	public  Optional<Dog> findByPetId(@PathVariable String petId) {
+		Optional<Dog> dogs = dogRepository.findByPetId(petId);
+		return dogs;
 	}
 	
 	@DeleteMapping("/{id}")
